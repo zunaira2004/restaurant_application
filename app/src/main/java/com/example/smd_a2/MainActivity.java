@@ -1,6 +1,8 @@
 package com.example.smd_a2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,14 +12,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnAdd;
+    Button btnAdd,btnSearch;
     RecyclerView rvItems;
     ItemAdapter adapter;
-    ArrayList<Item> item;
+    TextInputEditText etFilter;
+    public static ArrayList<Item> item;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,41 +34,95 @@ public class MainActivity extends AppCompatActivity {
         rvItems=findViewById(R.id.rvItems);
         rvItems.setLayoutManager(new LinearLayoutManager(this));
 
+
         init();
 
-        adapter=new ItemAdapter(item);
+        adapter = new ItemAdapter(item, new ItemAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Item i) {
+                detailsRestaurantDetails(i);
+            }
+        });
         rvItems.setAdapter(adapter);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent =new Intent(MainActivity.this, FormActivity.class);
-                startActivity(intent);
-                finish();
+                startActivityForResult(intent, 1);
+            }
+        });
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchText = etFilter.getText().toString().trim().toLowerCase();
+                if (searchText.equals("rating")) {
+                    sortItemsByRating();
+                }
             }
         });
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            String name = data.getStringExtra("Res_name");
+            String subname = data.getStringExtra("Res_subname");
+            String location = data.getStringExtra("Res_location");
+            String phone = data.getStringExtra("Res_phone");
+            String description = data.getStringExtra("Res_description");
+            String rating = String.valueOf(data.getIntExtra("Res_rating",0));
+
+            int rat=Integer.parseInt(rating);
+//            Item newItem = new Item(name, location, phone, description, subname, 5);
+//            item.add(newItem);
+            item.add(new Item(name, location, phone, description, subname,rat));
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     void init()
     {
         btnAdd=findViewById(R.id.btnAdd);
+        etFilter=findViewById(R.id.etFilter);
+        btnSearch=findViewById(R.id.btnSearch);
 
         item=new ArrayList<>();
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi"));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi"));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi"));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi"));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi"));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi"));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi"));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi"));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi"));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi"));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi"));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi"));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi"));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi"));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi"));
+        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi",5));
+        item.add(new Item("very tasty","nair o nair","03024593139","not that tasty honestly","non-desi",2));
+        item.add(new Item("yar ajeeb","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi",2));
+        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi",1));
+        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi",3));
+        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi",4));
 
-//        rvItems.setHasFixedSize(true);
+        rvItems.setHasFixedSize(true);
     }
+
+
+    public void detailsRestaurantDetails(Item d) {
+        Intent intent=new Intent(MainActivity.this,Details_Activity.class);
+        intent.putExtra("Res_name",d.getRestaurant_name());
+        intent.putExtra("Res_subname",d.getSubItem());
+        intent.putExtra("Res_location",d.getLocation());
+        intent.putExtra("Res_phone",d.getPhone_no());
+        intent.putExtra("Res_description",d.getDescription());
+        intent.putExtra("Res_rating",d.getRating());
+        System.out.println(d.getRating());
+
+        startActivity(intent);
+    }
+    private void sortItemsByRating() {
+        Collections.sort(item, new Comparator<Item>() {
+            @Override
+            public int compare(Item item1, Item item2) {
+                // Sort by descending order of rating
+                return Integer.compare(item2.getRating(), item1.getRating());
+            }
+        });
+        adapter.notifyDataSetChanged(); // Update the RecyclerView
+    }
+
 }

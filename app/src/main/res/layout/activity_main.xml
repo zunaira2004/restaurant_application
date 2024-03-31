@@ -41,6 +41,7 @@
                     android:layout_width="150dp"
                     android:layout_height="60dp"
                     android:text="@string/add"
+                    android:textColor="@color/white"
                     android:layout_toRightOf="@id/logo"
                     android:layout_marginLeft="110dp"
                     android:layout_marginTop="15dp"
@@ -48,24 +49,38 @@
                     android:backgroundTint="@color/orange"/>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/logo"
                     android:id="@+id/filter">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
-                        android:hint="Add filter"
+                        android:hint="@string/filter_by_rating"
+                        android:inputType="text"
+                        android:imeOptions="actionDone"
+                        android:id="@+id/etFilter"
                         >
                     </com.google.android.material.textfield.TextInputEditText>
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search"
+                    android:textColor="@color/white"
+                    android:id="@+id/btnSearch"
+                    android:backgroundTint="@color/orange"
+                    android:layout_toRightOf="@id/filter"
+                    android:layout_marginTop="90dp"
+                    tools:ignore="NotSibling" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/filter"
                     android:id="@+id/rvItems"
-
+                    android:onClick="detailsRestaurantDetails"
                     />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>

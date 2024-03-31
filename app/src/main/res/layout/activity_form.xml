@@ -29,7 +29,21 @@
           <com.google.android.material.textfield.TextInputEditText
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:hint="@string/enter_name"/>
+              android:hint="@string/enter_name"
+              android:id="@+id/etName"/>
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="5dp"
+          >
+          <com.google.android.material.textfield.TextInputEditText
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:hint="@string/enter_category"
+              android:id="@+id/etSubname"/>
 
       </com.google.android.material.textfield.TextInputLayout>
       <com.google.android.material.textfield.TextInputLayout
@@ -40,7 +54,8 @@
           <com.google.android.material.textfield.TextInputEditText
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:hint="@string/enter_location"/>
+              android:hint="@string/enter_location"
+              android:id="@+id/etLocation"/>
 
       </com.google.android.material.textfield.TextInputLayout>
       <com.google.android.material.textfield.TextInputLayout
@@ -51,7 +66,8 @@
           <com.google.android.material.textfield.TextInputEditText
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:hint="@string/enter_phone_number"/>
+              android:hint="@string/enter_phone_number"
+              android:id="@+id/etPhone"/>
 
       </com.google.android.material.textfield.TextInputLayout>
       <com.google.android.material.textfield.TextInputLayout
@@ -62,7 +78,24 @@
           <com.google.android.material.textfield.TextInputEditText
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:hint="@string/enter_description"/>
+              android:hint="@string/enter_description"
+              android:id="@+id/etDescription"/>
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="5dp"
+          >
+          <com.google.android.material.textfield.TextInputEditText
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:hint="@string/rating_1_5"
+              android:inputType="number"
+              android:maxLines="1"
+              android:imeOptions="actionDone"
+              android:id="@+id/etRating"/>
 
       </com.google.android.material.textfield.TextInputLayout>
 
