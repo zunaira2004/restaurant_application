@@ -7,13 +7,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     ItemAdapter adapter;
     TextInputEditText etFilter;
     public static ArrayList<Item> item;
+    private static final String SHARED_PREFS_KEY = "shared_prefs_key";
+    private static final String ITEM_LIST_KEY = "item_list_key";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         init();
+
+        loadItemsFromSharedPreferences(); // Load saved items
 
         adapter = new ItemAdapter(item, new ItemAdapter.OnItemClickListener() {
             @Override
@@ -81,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
 //            item.add(newItem);
             item.add(new Item(name, location, phone, description, subname,rat));
             adapter.notifyDataSetChanged();
+
+            saveItemsToSharedPreferences();
         }
     }
 
@@ -97,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi",1));
         item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi",3));
         item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi",4));
+
 
         rvItems.setHasFixedSize(true);
     }
@@ -123,6 +135,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         adapter.notifyDataSetChanged(); // Update the RecyclerView
+    }
+
+    private void saveItemsToSharedPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS_KEY, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(item);
+        editor.putString(ITEM_LIST_KEY, json);
+        editor.apply();
+    }
+
+    private void loadItemsFromSharedPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS_KEY, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(ITEM_LIST_KEY, "");
+        Type type = new TypeToken<ArrayList<Item>>() {}.getType();
+        item = gson.fromJson(json, type);
+
+        if (item == null) {
+            item = new ArrayList<>();
+        }
     }
 
 }
