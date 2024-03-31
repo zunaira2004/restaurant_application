@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
 //            item.add(newItem);
             item.add(new Item(name, location, phone, description, subname,rat));
             adapter.notifyDataSetChanged();
-
             saveItemsToSharedPreferences();
         }
     }
@@ -102,13 +101,12 @@ public class MainActivity extends AppCompatActivity {
         btnSearch=findViewById(R.id.btnSearch);
 
         item=new ArrayList<>();
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi",5));
-        item.add(new Item("very tasty","nair o nair","03024593139","not that tasty honestly","non-desi",2));
-        item.add(new Item("yar ajeeb","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi",2));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi",1));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi",3));
-        item.add(new Item("heavy khana","Apky samny wala ghar","03024593139","ek bar kha k dekho","desi",4));
-
+        item.add(new Item("food1","location1","03024593139","description1","subitem1",5));
+        item.add(new Item("food2","location2","03024593139","description2","subitem2",2));
+        item.add(new Item("food3","location3","03024593139","description3","subitem3",2));
+        item.add(new Item("food4","location4","03024593139","description4","subitem4",1));
+        item.add(new Item("food5","location4","03024593139","description5","subitem5",3));
+        item.add(new Item("food6","location5r","03024593139","description6","subitem6",4));
 
         rvItems.setHasFixedSize(true);
     }
